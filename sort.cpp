@@ -139,3 +139,49 @@ void mergeSort(int arr[], int l, int r)
 		merge(arr, l, m, r);
 	}
 }
+
+
+void heapify(int arr[], int N, int i)
+{
+	// Khởi tạo largest là gốc
+	int largest = i; // 'i' là chỉ số của gốc của cây con đang được heapify
+
+	// left = 2*i + 1
+	int l = 2 * i + 1; // 'l' là chỉ số của con trái
+
+	// right = 2*i + 2
+	int r = 2 * i + 2; // 'r' là chỉ số của con phải
+
+	// Nếu con trái lớn hơn gốc
+	if (l < N && arr[l] > arr[largest])
+		largest = l; // Cập nhật largest nếu con trái lớn hơn gốc
+
+	// Nếu con phải lớn hơn largest cho đến nay
+	if (r < N && arr[r] > arr[largest])
+		largest = r; // Cập nhật largest nếu con phải lớn hơn largest hiện tại
+
+	// Nếu largest không phải là gốc
+	if (largest != i) {
+		swap(arr[i], arr[largest]); // Hoán đổi gốc với largest
+
+		// Đệ quy heapify cây con bị ảnh hưởng
+		heapify(arr, N, largest); // Đệ quy để heapify cây con ở vị trí largest
+	}
+}
+
+void heapSort(int arr[], int N)
+{
+	// Xây dựng heap (sắp xếp lại mảng)
+	for (int i = N / 2 - 1; i >= 0; i--)
+		heapify(arr, N, i);
+
+	// Trích xuất từng phần tử từ heap
+	for (int i = N - 1; i > 0; i--) {
+		// Di chuyển gốc hiện tại đến cuối
+		swap(arr[0], arr[i]);
+
+		// Gọi heapify trên heap đã bị giảm kích thước
+		heapify(arr, i, 0);
+	}
+}
+
